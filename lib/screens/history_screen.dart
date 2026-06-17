@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:siptime/widgets/bottom_navigation_bar.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -7,15 +8,9 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('기록'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => context.go('/'),
-          child: const Text('홈으로 이동'),
-        ),
-      ),
+      appBar: AppBar(centerTitle: true, title: const Text('기록')),
+      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
+      body: Center(),
     );
   }
 }

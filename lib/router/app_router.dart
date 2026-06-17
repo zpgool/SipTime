@@ -10,15 +10,18 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomeScreen(),
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: HomeScreen()),
       ),
       GoRoute(
         path: '/history',
-        builder: (context, state) => const HistoryScreen(),
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: HistoryScreen()),
       ),
       GoRoute(
         path: '/settings',
-        builder: (context, state) => const SettingsScreen(),
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: SettingsScreen()),
       ),
     ],
   );

@@ -9,6 +9,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          surfaceTintColor: Colors.transparent,
+        ),
+
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+        ),
+      ),
     );
   }
 }
