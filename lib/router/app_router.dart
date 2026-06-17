@@ -1,8 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../screens/home_screen.dart';
-import '../screens/history_screen.dart';
-import '../screens/settings_screen.dart';
+import '../app.dart';
+import '../screens/splash_screen.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -11,17 +10,16 @@ class AppRouter {
       GoRoute(
         path: '/',
         pageBuilder: (context, state) =>
-            const NoTransitionPage(child: HomeScreen()),
+            const NoTransitionPage(
+              child: SplashScreen(),
+            ),
       ),
       GoRoute(
-        path: '/history',
+        path: '/main',
         pageBuilder: (context, state) =>
-            const NoTransitionPage(child: HistoryScreen()),
-      ),
-      GoRoute(
-        path: '/settings',
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: SettingsScreen()),
+            const NoTransitionPage(
+              child: MainScreen(),
+            ),
       ),
     ],
   );
