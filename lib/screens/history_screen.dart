@@ -9,7 +9,6 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text('기록')),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
       body: Center(),
     );
   }

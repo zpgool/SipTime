@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(centerTitle: true, title: const Text("SipTime")),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(

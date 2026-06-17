@@ -9,7 +9,6 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text('설정')),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
       body: Padding(
         padding: EdgeInsets.all(20),
         

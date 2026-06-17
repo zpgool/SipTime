@@ -1,69 +1,83 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
+  final Function(int) onTap;
 
-  const CustomBottomNavBar({super.key, required this.currentIndex});
+  const CustomBottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20),
       child: Container(
         height: 70,
         decoration: BoxDecoration(
           color: Colors.white,
-          boxShadow: [BoxShadow(blurRadius: 10, color: const Color.fromARGB(58, 0, 0, 0))],
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _navItem(
-              context,
-              icon: Icons.home,
-              label: '홈',
-              index: 0,
-              path: '/',
-            ),
-            _navItem(
-              context,
-              icon: Icons.article,
-              label: '기록',
-              index: 1,
-              path: '/history',
-            ),
-            _navItem(
-              context,
-              icon: Icons.settings,
-              label: '설정',
-              index: 2,
-              path: '/settings',
-            ),
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 12,
+              color: Colors.black.withOpacity(0.08),
+            )
           ],
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final itemWidth = constraints.maxWidth / 3;
+
+            return Stack(
+              children: [
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeInOut,
+                  left: itemWidth * currentIndex + (itemWidth - 110) / 2,
+                  top: 5,
+                  child: Container(
+                    width: 110,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 237, 237, 237),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                ),
+
+                // 아이콘들
+                Row(
+                  children: [
+                    _item(Icons.home, 0),
+                    _item(Icons.article, 1),
+                    _item(Icons.settings, 2),
+                  ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _navItem(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required int index,
-    required String path,
-  }) {
-    final isSelected = currentIndex == index;
-
-    return GestureDetector(
-      onTap: () => context.go(path),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: isSelected ? const Color(0xFF4a90e2) : Colors.grey, size: 25,),
-          const SizedBox(height: 4),
-        ],
+  Widget _item(IconData icon, int index) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => onTap(index),
+        behavior: HitTestBehavior.opaque,
+        child: SizedBox(
+          height: 70,
+          child: Icon(
+            icon,
+            color: currentIndex == index
+                ? const Color(0xFF4a90e2)
+                : Colors.grey,
+            size: 26,
+          ),
+        ),
       ),
     );
   }
