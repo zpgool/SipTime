@@ -41,6 +41,7 @@ class _AppState extends State<MyApp> {
       ),
 
       home: Scaffold(
+          extendBody: true,
         body: AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
           child: pages[currentIndex],

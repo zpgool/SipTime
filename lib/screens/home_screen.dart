@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:siptime/widgets/bottom_navigation_bar.dart';
+import 'package:provider/provider.dart';
+import '../providers/water_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,31 +11,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int goal = 2000;
-  int totalWater = 0;
-  double _animatedProgress = 0;
-
-  final List<Map<String, dynamic>> records = [];
-
-  void addWater(int amount) {
-    setState(() {
-      totalWater += amount;
-
-      _animatedProgress = totalWater / goal;
-
-      records.insert(0, {
-        "amount": amount,
-        "time": TimeOfDay.now().format(context),
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final progress = totalWater / goal;
+    final provider = context.watch<WaterProvider>();
+    final progress = provider.totalWater / provider.goal;
 
     return Scaffold(
-      extendBody: true,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(centerTitle: true, title: const Text("SipTime")),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -45,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const Text("오늘의 목표", textAlign: TextAlign.center),
 
-                if (totalWater >= goal) ...[
+                if (provider.totalWater >= provider.goal) ...[
                   const SizedBox(height: 4),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -75,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "$goal",
+                  "${provider.goal}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24,
@@ -100,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "$totalWater",
+                  "${provider.totalWater}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 36,
@@ -122,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
 
             TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: _animatedProgress.clamp(0, 1)),
+              tween: Tween(begin: 0, end: provider.progress.clamp(0, 1)),
               duration: const Duration(milliseconds: 200),
               builder: (context, value, child) {
                 return LinearProgressIndicator(
@@ -170,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: const Color.fromARGB(43, 0, 0, 0)),
               ),
-              child: records.isEmpty
+              child: provider.records.isEmpty
                   ? const SizedBox(
                       height: 120,
                       child: Center(
@@ -181,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     )
                   : Column(
-                      children: records.take(10).map((record) {
+                      children: provider.records.take(10).map((record) {
                         return Container(
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.symmetric(
@@ -196,12 +180,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "${record["amount"]}mL",
+                                "${record.amount}mL",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(record["time"]),
+                              Text(
+                                TimeOfDay.fromDateTime(
+                                  record.time,
+                                ).format(context),
+                              ),
                             ],
                           ),
                         );
@@ -216,7 +204,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _quickButton(int amount) {
     return ElevatedButton(
-      onPressed: () => addWater(amount),
+      onPressed: () {
+        context.read<WaterProvider>().addWater(amount);
+      },
       child: Text(
         "${amount}mL",
         style: TextStyle(
