@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/water_record.dart';
 
 class WaterProvider extends ChangeNotifier {
-  final int goal = 2000;
+  int goal = 2000;
 
   int totalWater = 0;
 
@@ -37,4 +37,16 @@ class WaterProvider extends ChangeNotifier {
   }
 
   double get progress => totalWater / goal;
+
+  void increaseGoal() {
+  goal += 100;
+  notifyListeners();
+}
+
+void decreaseGoal() {
+  if (goal > 100) {
+    goal -= 100;
+    notifyListeners();
+  }
+}
 }
